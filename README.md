@@ -1,10 +1,10 @@
 # kafka-db-perf-test
 
 ```
-./bin/kafka-producer-perf-test \
+foo@bar confluent-7.2.2 % ./bin/kafka-producer-perf-test \       
     --topic topic-perf \
-    --num-records 10 \   
-    --record-size 100 \ 
+    --num-records 10 \
+    --record-size 100 \
     --throughput -1 \
     --producer-props \
         bootstrap.servers=localhost:9092 \

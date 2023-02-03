@@ -1,0 +1,5 @@
+spring:
+  application.name: kafcas-app
+
+  kafka:
+    bootstrap-servers: localhost:9092
