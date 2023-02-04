@@ -5,3 +5,12 @@ spring:
     bootstrap-servers: localhost:9092
     listener:
       type: batch
+      
+  cassandra:
+    schema-action: CREATE_IF_NOT_EXISTS
+    request.timeout: 10s
+    connection.connect-timeout: 10s
+    connection.init-query-timeout: 10s
+
+    local-datacenter: datacenter1
+    keyspace-name: spring_cassandra

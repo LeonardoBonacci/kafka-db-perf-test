@@ -8,7 +8,7 @@ import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 @Slf4j
 @SpringBootApplication 
@@ -21,11 +21,19 @@ public class KafCasReactiveApp implements CommandLineRunner {
 		SpringApplication.run(KafCasReactiveApp.class, args);
 	}
 	
-	private Mono<Void> consume() {
+	
+	private final FooRepo repo;
+	
+	private Flux<Foo> consume() {
    return kTemplate
            .receiveAutoAck()
-           .doOnNext(consumerRecord -> log.info("received value={}", consumerRecord.value()))
-           .then();
+           .map(record -> {
+          	 long now = System.currentTimeMillis();
+          	 var message = record.value();
+             log.debug("Received Message: {} at {}", message, now);
+             return new Foo(new FooKey(message, now));
+           })
+           .flatMap(repo::save);
 	}
 	
 	@Override

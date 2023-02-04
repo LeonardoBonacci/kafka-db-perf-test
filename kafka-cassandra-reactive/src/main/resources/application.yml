@@ -3,6 +3,14 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
-    
     consumer:
       group-id: i-am-reactive
+      
+  cassandra:
+    schema-action: CREATE_IF_NOT_EXISTS
+    request.timeout: 10s
+    connection.connect-timeout: 10s
+    connection.init-query-timeout: 10s
+
+    local-datacenter: datacenter1
+    keyspace-name: spring_cassandra
