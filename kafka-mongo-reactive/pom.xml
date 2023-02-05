@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>guru.bonacci.perf</groupId>
-	<artifactId>kafka-cassandra-batch</artifactId>
+	<artifactId>kafka-mongo-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kafka-cassandra-batch</name>
+	<name>kafka-mongo-reactive</name>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -24,9 +24,13 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.projectreactor.kafka</groupId>
+			<artifactId>reactor-kafka</artifactId>
+		</dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-cassandra</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
     </dependency>
     
 		<dependency>

@@ -1,0 +1,13 @@
+spring:
+  application.name: kafsql-app
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    listener:
+      type: batch
+    
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test

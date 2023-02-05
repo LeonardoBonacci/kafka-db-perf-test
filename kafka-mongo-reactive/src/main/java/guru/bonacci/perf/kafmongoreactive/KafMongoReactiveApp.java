@@ -1,4 +1,4 @@
-package guru.bonacci.perf.kafsql;
+package guru.bonacci.perf.kafmongoreactive;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,16 +12,17 @@ import reactor.core.publisher.Flux;
 @Slf4j
 @SpringBootApplication 
 @RequiredArgsConstructor
-public class KafSqlReactiveApp implements CommandLineRunner {
+public class KafMongoReactiveApp implements CommandLineRunner {
 
 	private final ReactiveKafkaConsumerTemplate<String, String> kTemplate;
 	
 	public static void main(String[] args) {
-		SpringApplication.run(KafSqlReactiveApp.class, args);
+		SpringApplication.run(KafMongoReactiveApp.class, args);
 	}
 	
 	
 	private final FooRepo repo;
+	private long counter = 0l;
 	
 	private Flux<Foo> consume() {
    return kTemplate
@@ -30,7 +31,7 @@ public class KafSqlReactiveApp implements CommandLineRunner {
           	 long now = System.currentTimeMillis();
           	 var message = record.value();
              log.debug("Received Message: {} at {}", message, now);
-             return Foo.builder().bar(message).whenn(now).build();
+             return Foo.builder().id(counter++).bar(message).whenn(now).build();
            })
            .flatMap(repo::save);
 	}

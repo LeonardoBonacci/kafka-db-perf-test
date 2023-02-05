@@ -48,21 +48,7 @@ cqlsh> select max(when) - min(when) from spring_cassandra.foo_reactive;
                                45.245
 ```
 
-# MySQL
-
-```
-mkdir /tmp/mysql-data
-docker run --name basic-mysql --rm -v /tmp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=ANSKk08aPEDbFjDO -e MYSQL_DATABASE=testing -p 3306:3306 -it mysql:8.0 -d
-
-
-docker exec -it basic-mysql /bin/bash
-#once inside the container 
-mysql -uroot -p
-#put/paste the password, and once inside MySQL CLI run
-show databases;
-```
-
-
+# SQL
 ```
 foo@bar confluent-7.2.2 % ./bin/kafka-producer-perf-test \       
     --topic topic-perf \
@@ -95,4 +81,78 @@ postgres=# select max(whenn) - min(whenn) from foo_reactive;
  ?column?
 ----------
    264.188
+```
+
+# MongoDB
+
+```
+test> db.foo_blocking.find().sort({"_id":1}).limit(1)
+[
+  {
+    _id: Long("0"),
+    bar: 'SSXVNJHPDQDXVCRASTVYBCWVMGNYKRXVZXKGXTSPSJDGYLUEGQFLAQLOCFLJBEPOWFNSOMYARHAOPUFOJHHDXEHXJBHWGSMZJGNL',
+    whenn: Long("1675560090442"),
+    _class: 'guru.bonacci.perf.kafmongobatch.Foo'
+  }
+]
+
+test> db.foo_blocking.find().sort({"_id":-1}).limit(1)
+[
+  {
+    _id: Long("999999"),
+    bar: 'ZBOPOQZYGATIOIEIYXCTVOQWNXSKVHPSPEVTLTDNBQTHVVVEBGZOCVTBAUBDNPMPLICFOBULZEMLLAMTKWGORFSCDHNAWTSTOEIB',
+    whenn: Long("1675560989836"),
+    _class: 'guru.bonacci.perf.kafmongobatch.Foo'
+  }
+]
+
+1675560989836 - 1675560090442 = 899.394
+```
+
+```
+test> db.foo_blocking_batch.find().sort({"_id":1}).limit(1)
+[
+  {
+    _id: Long("0"),
+    bar: 'SSXVNJHPDQDXVCRASTVYBCWVMGNYKRXVZXKGXTSPSJDGYLUEGQFLAQLOCFLJBEPOWFNSOMYARHAOPUFOJHHDXEHXJBHWGSMZJGNL',
+    whenn: Long("1675562143146"),
+    _class: 'guru.bonacci.perf.kafmongobatch.Foo'
+  }
+]
+
+test> db.foo_blocking_batch.find().sort({"_id":-1}).limit(1)
+[
+  {
+    _id: Long("999999"),
+    bar: 'ZBOPOQZYGATIOIEIYXCTVOQWNXSKVHPSPEVTLTDNBQTHVVVEBGZOCVTBAUBDNPMPLICFOBULZEMLLAMTKWGORFSCDHNAWTSTOEIB',
+    whenn: Long("1675563040245"),
+    _class: 'guru.bonacci.perf.kafmongobatch.Foo'
+  }
+]
+
+1675563040245 - 1675560989836 =  2.020.409
+```
+
+```
+ db.foo_reactive.find().sort({"_id":-1}).limit(1)
+[
+  {
+    _id: Long("999999"),
+    bar: 'ZBOPOQZYGATIOIEIYXCTVOQWNXSKVHPSPEVTLTDNBQTHVVVEBGZOCVTBAUBDNPMPLICFOBULZEMLLAMTKWGORFSCDHNAWTSTOEIB',
+    whenn: Long("1675559682989"),
+    _class: 'guru.bonacci.perf.kafmongoreactive.Foo'
+  }
+]
+
+test> db.foo_reactive.find().sort({"_id":1}).limit(1)
+[
+  {
+    _id: Long("0"),
+    bar: 'SSXVNJHPDQDXVCRASTVYBCWVMGNYKRXVZXKGXTSPSJDGYLUEGQFLAQLOCFLJBEPOWFNSOMYARHAOPUFOJHHDXEHXJBHWGSMZJGNL',
+    whenn: Long("1675559610697"),
+    _class: 'guru.bonacci.perf.kafmongoreactive.Foo'
+  }
+]
+
+1675559682989 - 1675559610697 = 72.292
 ```

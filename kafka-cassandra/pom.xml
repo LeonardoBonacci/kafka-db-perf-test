@@ -8,7 +8,7 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>guru.bonacci.performance</groupId>
+	<groupId>guru.bonacci.perf</groupId>
 	<artifactId>kafka-cassandra</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>kafka-cassandra</name>

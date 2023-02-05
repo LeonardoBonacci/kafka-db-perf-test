@@ -1,8 +1,7 @@
-package guru.bonacci.perf.kafsql;
+package guru.bonacci.perf.kafmongoreactive;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +10,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@Table("foo_reactive")
 @NoArgsConstructor
 @AllArgsConstructor
+@Document("foo_reactive")
 public class Foo {
 
 	@Id
-	@Column("id")
 	private Long id;
 	
-	@Column("bar")
   private String bar;
-	
-	@Column("whenn")
   private long whenn;
 }

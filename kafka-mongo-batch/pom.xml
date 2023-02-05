@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>guru.bonacci.perf</groupId>
-	<artifactId>kafka-cassandra-batch</artifactId>
+	<artifactId>kafka-mongo-batch</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kafka-cassandra-batch</name>
+	<name>kafka-mongo-batch</name>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -26,7 +26,7 @@
 		</dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-cassandra</artifactId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
     
 		<dependency>

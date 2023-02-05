@@ -1,0 +1,13 @@
+spring:
+  application.name: kafcas-reactive-app
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: i-am-mongo-reactive
+      
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test

@@ -1,4 +1,4 @@
-package guru.bonacci.perf.kafsql;
+package guru.bonacci.perf.kafmongoreactive;
 
 import java.util.List;
 
