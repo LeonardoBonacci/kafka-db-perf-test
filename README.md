@@ -81,23 +81,18 @@ foo@bar confluent-7.2.2 % ./bin/kafka-producer-perf-test \
 
 
 ```
-cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_blocking;
+postgres=# select max(whenn) - min(whenn) from foo_blocking;
+ ?column?
+----------
+  1.430.336
 
- system.max(when) - system.min(when)
--------------------------------------
-                             1.274.547
+postgres=# select max(whenn) - min(whenn) from foo_blocking_batch;
+ ?column?
+----------
+   708.419
 
-
-cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_blocking_batch;
-
- system.max(when) - system.min(when)
--------------------------------------
-                             1.381.360
-
-
-cqlsh> select max(when) - min(when) from spring_cassandra.foo_reactive;
-
- system.max(when) - system.min(when)
--------------------------------------
-                               45.245
+postgres=# select max(whenn) - min(whenn) from foo_reactive;
+ ?column?
+----------
+   264.188
 ```
