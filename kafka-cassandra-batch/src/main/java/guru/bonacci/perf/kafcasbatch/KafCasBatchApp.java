@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import guru.bonacci.perf.avro.Foo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,14 +22,14 @@ public class KafCasBatchApp {
 	}
 	
 	
-	private final FooRepo repo;
+	private final CFooRepo repo;
 	
-	@KafkaListener(topics = "topic-perf", groupId = "i-am-blocking-batch")
-	public void listen(List<String> messages) { // default size is 5000
+	@KafkaListener(topics = "perf_avro", groupId = "i-am-blocking-batch-to-cas")
+	public void listen(List<Foo> messages) { // default size is 5000
     var foos = messages.stream().map(message -> {
       long now = System.currentTimeMillis();
       log.debug("Received Message: {} at {}", message, now);
-      return new Foo(new FooKey(message, now));
+      return new CFoo(new CFooKey(message.getBar(), now));
 
     }).collect(Collectors.toList());
     	

@@ -3,8 +3,14 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
+    properties:
+      schema.registry.url: http://localhost:8081
     consumer:
-      group-id: i-am-reactive
+      group-id: i-am-reactive-to-cas
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
       
   cassandra:
     schema-action: CREATE_IF_NOT_EXISTS

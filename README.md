@@ -9,15 +9,20 @@ curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
   --data '{"schema": "{\"type\": \"string\"}"}' \
   http://localhost:8081/subjects/perf_avro-value/versions
 
-./bin/kafka-console-producer --bootstrap-server localhost:9092 --topic trans.coro
+curl -X DELETE http://localhost:8081/subjects/perf_avro-value/versions/latest
+curl -X GET http://localhost:8081/subjects?deleted=true
+
 ./bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic perf_string --from-beginning
+
+./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic perf_avroo --from-beginning \  
+    --property schema.registry.url="http://schema-registry:8081"
 ```
 
 
 # Cassandra
 
 ```
-docker-compose -f docker-compose.yml -f kafka-cassandra/docker-compose-cas.yml up -d
+docker-compose -f docker-compose.yml -f cassandra/docker-compose-cas.yml up -d
 
 docker exec -it cassandra cqlsh
 

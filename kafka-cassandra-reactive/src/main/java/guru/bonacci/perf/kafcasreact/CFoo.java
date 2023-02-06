@@ -1,4 +1,4 @@
-package guru.bonacci.perf.kafcas;
+package guru.bonacci.perf.kafcasreact;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Table("foo_blocking")
+@Table("foo_reactive")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Foo {
+public class CFoo {
 
   @PrimaryKey
-  private FooKey key;
+  private CFooKey key;
 }

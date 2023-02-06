@@ -41,13 +41,13 @@ public class TransformerApp {
 	  KStream<String, String> inputStream = 
      builder 
       .stream("perf_string", Consumed.with(Serdes.String(), Serdes.String()))
-      .peek((poolFrom, transfer) -> log.info("in {}<>{}", poolFrom, transfer));
+      .peek((poolFrom, transfer) -> log.debug("in {}<>{}", poolFrom, transfer));
       
 	  KStream<String, Foo> outputStream = 
 	    inputStream
-	    	.mapValues(uuid -> Foo.newBuilder().setId(counter++).setBar(uuid).setWhenn(System.currentTimeMillis()).build());
+	    	.mapValues(uuid -> Foo.newBuilder().setId(counter++).setBar(uuid).build());
 
-	  outputStream.to("perf_avroo", Produced.with(Serdes.String(), avroSerde));
+	  outputStream.to("perf_avro", Produced.with(Serdes.String(), avroSerde));
 
 	  return outputStream;
 	}

@@ -1,4 +1,4 @@
-package guru.bonacci.perf.kafcasbatch;
+package guru.bonacci.perf.kafcas;
 
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @PrimaryKeyClass
 @NoArgsConstructor
 @AllArgsConstructor
-public class FooKey {
+public class CFooKey {
 
   @PrimaryKeyColumn(name = "bar", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
   private String bar;

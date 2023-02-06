@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Table("foo_reactive")
+@Table("foo_blocking")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Foo {
+public class CFoo {
 
   @PrimaryKey
-  private FooKey key;
+  private CFooKey key;
 }

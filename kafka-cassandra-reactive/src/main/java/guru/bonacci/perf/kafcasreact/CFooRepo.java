@@ -1,8 +1,8 @@
-package guru.bonacci.perf.kafcas;
+package guru.bonacci.perf.kafcasreact;
 
 import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FooRepo extends ReactiveCassandraRepository<Foo, FooKey> {
+public interface CFooRepo extends ReactiveCassandraRepository<CFoo, CFooKey> {
 }

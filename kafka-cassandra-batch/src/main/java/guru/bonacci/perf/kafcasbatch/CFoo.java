@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Table("foo_blocking_batch")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Foo {
+public class CFoo {
 
   @PrimaryKey
-  private FooKey key;
+  private CFooKey key;
 }
