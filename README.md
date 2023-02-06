@@ -43,6 +43,8 @@ docker exec -it cassandra cqlsh
 
 CREATE KEYSPACE IF NOT EXISTS spring_cassandra WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'};
 
+CREATE TABLE spring_cassandra.test_table (bar text PRIMARY KEY, when bigint);
+
 ./bin/connect-standalone etc/kafka/connect-standalone.properties connect-cassandra-avro-sink.properties
 ```
 
@@ -84,6 +86,14 @@ cqlsh> select max(when) - min(when) from spring_cassandra.foo_reactive;
  system.max(when) - system.min(when)
 -------------------------------------
                                45.245
+
+
+# TODO 'kafka connect like' table name 
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               34.798
 ```
 
 # SQL
