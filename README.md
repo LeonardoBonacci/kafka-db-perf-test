@@ -5,16 +5,32 @@
 ./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_string --create --partitions 1 --replication-factor 1
 ./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_avro --create --partitions 1 --replication-factor 1
 
+{"type": "record","name": "Foo", "namespace": "guru.bonacci.perf.avro", "fields": [{"name": "id", "type": "long"}, {"name": "bar","type": "string"}]}
+
+{\"type\": \"record\",\"name\": \"Foo\", \"namespace\": \"guru.bonacci.perf.avro\", \"fields\": [{\"name\": \"id\", \"type\": \"long\"}, {\"name\": \"bar\",\"type\": \"string\"}]}
+
 curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
-  --data '{"schema": "{\"type\": \"string\"}"}' \
-  http://localhost:8081/subjects/perf_avro-value/versions
+  --data '{"schema": "{\"type\": \"record\",\"name\": \"Foo\", \"namespace\": \"guru.bonacci.perf.avro\", \"fields\": [{\"name\": \"id\", \"type\": \"long\"}, {\"name\": \"bar\",\"type\": \"string\"}]}"}' \
+  http://localhost:8081/subjects/test-avro-value/versions
 
 curl -X DELETE http://localhost:8081/subjects/perf_avro-value/versions/latest
-curl -X GET http://localhost:8081/subjects?deleted=true
+
 
 ./bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic perf_string --from-beginning
 
-./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic perf_avroo --from-beginning \  
+./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic perf_avro --from-beginning \  
+    --property schema.registry.url="http://schema-registry:8081"
+
+
+./bin/kafka-console-producer --bootstrap-server localhost:9092 --topic test_topic
+
+kafka-avro-console-producer \
+ --broker-list localhost:9092 \
+ --topic test-avro  \
+ --property schema.registry.url=http://localhost:8081 \
+ --property value.schema.id=4
+
+ ./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic test-avro --from-beginning \  
     --property schema.registry.url="http://schema-registry:8081"
 ```
 
@@ -23,10 +39,11 @@ curl -X GET http://localhost:8081/subjects?deleted=true
 
 ```
 docker-compose -f docker-compose.yml -f cassandra/docker-compose-cas.yml up -d
-
 docker exec -it cassandra cqlsh
 
 CREATE KEYSPACE IF NOT EXISTS spring_cassandra WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'};
+
+./bin/connect-standalone etc/kafka/connect-standalone.properties connect-cassandra-avro-sink.properties
 ```
 
 
