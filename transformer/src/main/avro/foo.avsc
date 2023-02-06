@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "Foo",
+  "namespace": "guru.bonacci.perf.avro",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "bar",
+      "type": "string"
+    },
+    {
+      "name": "whenn",
+      "type": "long"
+    }
+  ]
+}

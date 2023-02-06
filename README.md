@@ -1,3 +1,19 @@
+# Prepare Kafka
+
+```
+./bin/kafka-topics --bootstrap-server localhost:9092 --list
+./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_string --create --partitions 1 --replication-factor 1
+./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_avro --create --partitions 1 --replication-factor 1
+
+curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+  --data '{"schema": "{\"type\": \"string\"}"}' \
+  http://localhost:8081/subjects/perf_avro-value/versions
+
+./bin/kafka-console-producer --bootstrap-server localhost:9092 --topic trans.coro
+./bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic perf_string --from-beginning
+```
+
+
 # Cassandra
 
 ```
@@ -11,7 +27,7 @@ CREATE KEYSPACE IF NOT EXISTS spring_cassandra WITH replication = {'class': 'Sim
 
 ```
 foo@bar confluent-7.2.2 % ./bin/kafka-producer-perf-test \       
-    --topic topic-perf \
+    --topic perf_string \
     --num-records 10 \
     --record-size 100 \
     --throughput -1 \
