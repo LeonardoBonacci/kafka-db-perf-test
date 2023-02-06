@@ -38,6 +38,9 @@ kafka-avro-console-producer \
 # Cassandra
 
 ```
+mvn clean compile assembly:single
+java -jar target/plain-cassandra-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
 docker-compose -f docker-compose.yml -f cassandra/docker-compose-cas.yml up -d
 docker exec -it cassandra cqlsh
 
@@ -72,6 +75,7 @@ cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_b
  system.max(when) - system.min(when)
 -------------------------------------
                              1.274.547
+                             1274547
 
 
 cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_blocking_batch;
@@ -93,7 +97,14 @@ cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
 
  system.max(when) - system.min(when)
 -------------------------------------
-                               34.798
+                               34798
+
+# TODO 'plain consumer like' table name 
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               32982
 ```
 
 # SQL

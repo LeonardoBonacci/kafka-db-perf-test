@@ -47,7 +47,7 @@ public class TransformerApp {
 	    inputStream
 	    	.mapValues(uuid -> Foo.newBuilder().setId(counter++).setBar(uuid).build());
 
-	  outputStream.to("perf_avro", Produced.with(Serdes.String(), avroSerde));
+	  outputStream.to("test-avro", Produced.with(Serdes.String(), avroSerde));
 
 	  return outputStream;
 	}
