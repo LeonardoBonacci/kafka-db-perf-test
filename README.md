@@ -105,6 +105,13 @@ cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
  system.max(when) - system.min(when)
 -------------------------------------
                                32982
+
+# AND THE WINNER IS... FLINK!
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               19063
 ```
 
 # SQL
