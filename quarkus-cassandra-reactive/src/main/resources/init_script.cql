@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS spring_cassandra.fruit(name text PRIMARY KEY, description text);
