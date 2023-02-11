@@ -1,5 +1,7 @@
 package guru.bonacci.perf;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,10 +12,6 @@ import javax.ws.rs.core.MediaType;
 
 import io.smallrye.mutiny.Uni;
 
-/**
- * A REST resource exposing reactive endpoints for creating and retrieving {@link Fruit} objects in
- * the database, leveraging the {@link ReactiveFruitService} component.
- */
 @Path("/reactive-fruits")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,25 +20,21 @@ public class ReactiveFruitResource {
   @Inject ReactiveFruitService service;
 
 //  @GET
-//  public Multi<FruitDto> getAll() {
-//    return service.getAll().map(this::convertToDto);
+//  public Uni<Void> foo() {
+//    return service.add(new Fruit("hi", "apple"));
 //  }
 
   @GET
   public Uni<Void> foo() {
-    return service.add(new Fruit("hi", "apple"));
+    return service.add(new CFoo(UUID.randomUUID().toString(), System.currentTimeMillis()));
   }
 
-  @POST
-  public Uni<Void> add(FruitDto fruitDto) {
-    return service.add(convertFromDto(fruitDto));
-  }
-
-  private FruitDto convertToDto(Fruit fruit) {
-    return new FruitDto(fruit.getName(), fruit.getDescription());
-  }
-
-  private Fruit convertFromDto(FruitDto fruitDto) {
-    return new Fruit(fruitDto.getName(), fruitDto.getDescription());
-  }
+//  @POST
+//  public Uni<Void> add(FruitDto fruitDto) {
+//    return service.add(convertFromDto(fruitDto));
+//  }
+//
+//  private Fruit convertFromDto(FruitDto fruitDto) {
+//    return new Fruit(fruitDto.getName(), fruitDto.getDescription());
+//  }
 }
