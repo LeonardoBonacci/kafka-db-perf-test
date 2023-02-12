@@ -19,9 +19,9 @@ public class CFoo {
   @ClusteringColumn(1) 
   private final Long when;
 
-  public CFoo(String name, Long description) {
-    this.bar = name;
-    this.when = description;
+  public CFoo(String bar, Long when) {
+    this.bar = bar;
+    this.when = when;
   }
 
   public String getBar() {
