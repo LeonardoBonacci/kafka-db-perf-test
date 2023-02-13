@@ -1,17 +1,60 @@
+# Prepare Kafka
+
+```
+./bin/kafka-topics --bootstrap-server localhost:9092 --list
+./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_string --create --partitions 1 --replication-factor 1
+./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_avro --create --partitions 1 --replication-factor 1
+
+{"type": "record","name": "Foo", "namespace": "guru.bonacci.perf.avro", "fields": [{"name": "id", "type": "long"}, {"name": "bar","type": "string"}]}
+
+{\"type\": \"record\",\"name\": \"Foo\", \"namespace\": \"guru.bonacci.perf.avro\", \"fields\": [{\"name\": \"id\", \"type\": \"long\"}, {\"name\": \"bar\",\"type\": \"string\"}]}
+
+curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+  --data '{"schema": "{\"type\": \"record\",\"name\": \"Foo\", \"namespace\": \"guru.bonacci.perf.avro\", \"fields\": [{\"name\": \"id\", \"type\": \"long\"}, {\"name\": \"bar\",\"type\": \"string\"}]}"}' \
+  http://localhost:8081/subjects/test-avro-value/versions
+
+curl -X DELETE http://localhost:8081/subjects/perf_avro-value/versions/latest
+
+
+./bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic perf_string --from-beginning
+
+./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic perf_avro --from-beginning \  
+    --property schema.registry.url="http://schema-registry:8081"
+
+
+./bin/kafka-console-producer --bootstrap-server localhost:9092 --topic test_topic
+
+kafka-avro-console-producer \
+ --broker-list localhost:9092 \
+ --topic test-avro  \
+ --property schema.registry.url=http://localhost:8081 \
+ --property value.schema.id=4
+
+ ./bin/kafka-avro-console-consumer --bootstrap-server localhost:9092 --topic test-avro --from-beginning \  
+    --property schema.registry.url="http://schema-registry:8081"
+```
+
+
 # Cassandra
 
 ```
-docker-compose -f docker-compose.yml -f kafka-cassandra/docker-compose-cas.yml up -d
+mvn clean compile assembly:single
+java -jar target/plain-cassandra-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
+docker-compose -f docker-compose.yml -f cassandra/docker-compose-cas.yml up -d
 docker exec -it cassandra cqlsh
 
 CREATE KEYSPACE IF NOT EXISTS spring_cassandra WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'};
+
+CREATE TABLE spring_cassandra.test_table (bar text PRIMARY KEY, when bigint);
+
+./bin/connect-standalone etc/kafka/connect-standalone.properties connect-cassandra-avro-sink.properties
 ```
 
 
 ```
 foo@bar confluent-7.2.2 % ./bin/kafka-producer-perf-test \       
-    --topic topic-perf \
+    --topic perf_string \
     --num-records 10 \
     --record-size 100 \
     --throughput -1 \
@@ -32,6 +75,7 @@ cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_b
  system.max(when) - system.min(when)
 -------------------------------------
                              1.274.547
+                             1274547
 
 
 cqlsh:spring_cassandra> select max(when) - min(when) from spring_cassandra.foo_blocking_batch;
@@ -46,6 +90,37 @@ cqlsh> select max(when) - min(when) from spring_cassandra.foo_reactive;
  system.max(when) - system.min(when)
 -------------------------------------
                                45.245
+
+
+# TODO 'kafka connect like' table name 
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               34798
+
+# TODO 'plain consumer like' table name 
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               32982
+
+
+# little disappointing..
+cqlsh:spring_cassandra> select max(when) - min(when) from quarkus_foo;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                             1.174.088
+
+
+# AND THE WINNER IS... FLINK!
+cqlsh> select max(when) - min(when) from spring_cassandra.test_table;
+
+ system.max(when) - system.min(when)
+-------------------------------------
+                               19063
 ```
 
 # SQL

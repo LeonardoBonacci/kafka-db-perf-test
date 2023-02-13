@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 
+import guru.bonacci.perf.avro.Foo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,12 +20,12 @@ public class KafCasApp {
 	}
 	
 	
-	private final FooRepo repo;
+	private final CFooRepo repo;
 	
-	@KafkaListener(topics = "topic-perf", groupId = "i-am-blocking")
-	public void listen(@Payload String message) {
+	@KafkaListener(topics = "perf_avro", groupId = "i-am-blocking-to-cas")
+	public void listen(@Payload Foo message) {
 		long now = System.currentTimeMillis();
     log.debug("Received Message: {} at {}", message, now);
-    repo.save(new Foo(new FooKey(message, now)));
+    repo.save(new CFoo(new CFooKey(message.getBar(), now)));
 	}
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>guru.bonacci.perf</groupId>
+	<artifactId>plain-cassandra</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>plain-cassandra</name>
+
+	<properties>
+  	 <maven.compiler.target>17</maven.compiler.target>
+      <maven.compiler.source>17</maven.compiler.source>
+		  <datastax-cassandra.version>4.15.0</datastax-cassandra.version>
+      <netty-transport-version>4.1.71.Final</netty-transport-version>
+	</properties>
+
+  <repositories>
+   <repository>
+      <id>confluent</id>
+      <url>https://packages.confluent.io/maven/</url>
+    </repository>
+  </repositories>
+
+	<dependencies>
+        <!-- DataStax Cassandra -->
+        <dependency>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-core</artifactId>
+            <version>${datastax-cassandra.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datastax.oss</groupId>
+            <artifactId>java-driver-query-builder</artifactId>
+            <version>${datastax-cassandra.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
+            <version>${netty-transport-version}</version>
+        </dependency>
+
+	<dependency>
+		<groupId>io.confluent</groupId>
+		<artifactId>kafka-schema-registry-client</artifactId>
+		<version>7.0.1</version>
+		</dependency>
+		<dependency>
+		<groupId>org.apache.avro</groupId>
+		<artifactId>avro</artifactId>
+		<version>1.10.2</version>
+		</dependency>
+		<dependency>
+		<groupId>io.confluent</groupId>
+		<artifactId>kafka-avro-serializer</artifactId>
+		<version>7.0.1</version>
+	</dependency>
+
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.24</version>
+    <scope>provided</scope>
+</dependency>
+	</dependencies>
+
+	<build>
+      <plugins>
+      <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>guru.bonacci.perf.plaincas.PlainCasApp</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
+
+       <plugin>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro-maven-plugin</artifactId>
+          <version>1.8.2</version>
+          <executions>
+              <execution>
+                  <phase>generate-sources</phase>
+                  <goals>
+                      <goal>schema</goal>
+                  </goals>
+                  <configuration>
+                      <sourceDirectory>src/main/avro</sourceDirectory> <!-- <5> -->
+                      <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                      <stringType>String</stringType>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
+
+		</plugins>
+	</build>
+
+</project>
