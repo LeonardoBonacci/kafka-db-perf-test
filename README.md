@@ -1,5 +1,17 @@
 # Prepare Kafka
 
+| cassandra integration | ms        |
+| --------------------- |----------:|
+| spring blocking       | 1.274.547 |
+| spring batch blocking | 1.381.360 |
+| spring reactive       |    45.245 |
+| plain consumer        |    32.982 |
+| kafka connector       |    34.798 | 
+| quarkus reactive      | 1.174.088 |
+| apache flink          |    19.063 |
+
+
+
 ```
 ./bin/kafka-topics --bootstrap-server localhost:9092 --list
 ./bin/kafka-topics --bootstrap-server localhost:9092 --topic perf_string --create --partitions 1 --replication-factor 1
